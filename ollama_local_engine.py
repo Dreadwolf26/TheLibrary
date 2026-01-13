@@ -3,6 +3,7 @@ from coded_values import system_prompt, evaluation_system_prompt
 from db_connection import insert_response, insert_evaluation, get_recent_responses
 from utils import format_eval_prompt
 import json
+from log_data import logger
 #testing with llama:3latest
 
 #creating a client to connect to the local Ollama server
@@ -21,6 +22,7 @@ def prompt_ollama(prompt):
     #print for testing purposes
     #print(result.message.content)
     insert_response(prompt, result.message.content)
+    logger.info(f"Prompt sent: {prompt}")
     return result.message.content
 
 
@@ -53,6 +55,7 @@ def eval_ollama_output():
     try:
         evaluation_dict = json.loads(raw_output)
         evaluation_dict["status"] = "ok"
+        logger.info(f"Raw evaluation output: {raw_output}")
     except json.JSONDecodeError:
         evaluation_dict = {
             "instruction_adherence": 0,
@@ -61,9 +64,10 @@ def eval_ollama_output():
             "overall_score": 0,
             "status": "evaluation_failed"
         }
+        logger.error(f"Failed to parse evaluation output: {raw_output}")
 
     evaluation_json = json.dumps(evaluation_dict)
-
+    logger.info(f"Evaluation result for response ID {response_id}: {evaluation_json}")
     insert_evaluation(response_id, evaluation_json)
-
+    logger.info(f"Inserted evaluation for response ID {response_id}")
     return evaluation_dict

@@ -1,4 +1,5 @@
 import sqlite3
+from log_data import logger
 
 con = sqlite3.connect("TheLibrary.db")
 cur = con.cursor()
@@ -12,6 +13,8 @@ CREATE TABLE IF NOT EXISTS responses (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
 ) 
 """)
+logger.info("Responses table ensured in database.")
+
             
 cur.execute("""
 CREATE TABLE IF NOT EXISTS evaluations (
@@ -23,6 +26,7 @@ CREATE TABLE IF NOT EXISTS evaluations (
 )
 
 """)
+logger.info("Evaluations table ensured in database.")
 con.commit()
 
 def insert_response(prompt, response):
@@ -33,16 +37,17 @@ def insert_response(prompt, response):
         "INSERT INTO responses (prompt, response) VALUES (?, ?)",
         (prompt, response)
     )
+    logger.info(f"Inserted response for prompt: {prompt}")
     con.commit()
     #print(con)
     #print("Inserted prompt and response into database.")
 
-def fetch_responses():
-    """
-    Fetch all responses from the database.
-    """
-    cur.execute("SELECT * FROM responses")
-    return cur.fetchall()
+# def fetch_responses():
+#     """
+#     Fetch all responses from the database.
+#     """
+#     cur.execute("SELECT * FROM responses")
+#     return cur.fetchall()
 
 
 def insert_evaluation(response_id, evaluation_json):
