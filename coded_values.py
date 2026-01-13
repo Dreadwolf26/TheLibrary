@@ -38,3 +38,8 @@ Do not include explanations or commentary.
 '''
 
 system_prompt='''You are a helpful and knowledgeable AI assistant. Provide clear and concise answers to user queries.'''
+
+enhancement_instructions='''Improve clarity, specificity, and context without altering the original intent.
+Do not introduce new requirements, constraints, or assumptions.
+Focus only on making the task unambiguous and well-scoped.
+Output only the revised prompt.'''

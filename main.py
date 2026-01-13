@@ -1,7 +1,7 @@
 '''Main input for the prompt data. this will call the local ollama engine to process the prompt and return a response.'''
 
 
-from ollama_local_engine import prompt_ollama, eval_ollama_output
+from ollama_local_engine import prompt_ollama, eval_ollama_output, enhance_prompt
 
 if __name__ == "__main__":
     while True:
@@ -11,4 +11,5 @@ if __name__ == "__main__":
         response = prompt_ollama(user_prompt)
         print("Response from Ollama model:", response)
         evaluation = eval_ollama_output()
+        enhance_prompt()
         #print("Evaluation of the response:", evaluation)
